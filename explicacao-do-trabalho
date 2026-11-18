@@ -1,87 +1,108 @@
 # repositorio-matrizes
-# Código da Atividade - Modelos de Camisetas
+# Código da Atividade - Modelos de Camisetas (Versão Modularizada com Funções)
 
-# Definição das listas de referência e da matriz principal de estoque
-modelos = ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
-tamanhos = ["P", "M", "G"]
-estoque = []
+# Função principal que controla o cadastro inicial e o fluxo do menu interativo
+def main():
+    modelos = ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
+    tamanhos = ["P", "M", "G"]
+    estoque = []
 
-# Cadastro inicial: percorre cada modelo e tamanho para preencher a matriz
-for modelo in modelos:
-    linha = []
-    for tamanho in tamanhos:
-        qtd = int(input(f"{modelo}, tamanho {tamanho}: "))
-        # Validação para impedir que o usuário digite números negativos
-        while qtd < 0:
-            print("Quantidade inválida!")
-            qtd = int(input("Digite novamente: "))
-        linha.append(qtd)
-    estoque.append(linha)
+    # Cadastro inicial: preenche a matriz percorrendo cada modelo e tamanho
+    for modelo in modelos:
+        linha = []
+        for tamanho in tamanhos:
+            qtd = int(input(f"{modelo}, tamanho {tamanho}: "))
+            # Validação para impedir quantidades negativas no cadastro
+            while qtd < 0:
+                print("Quantidade inválida!")
+                qtd = int(input("Digite novamente: "))
+            linha.append(qtd)
+        estoque.append(linha)
 
-# Menu interativo principal em execução contínua
-while True:
-    print("\n1-Consultar  2-Vender  3-Repor estoque")
-    print("4-Estoque abaixo de 3  5-Mostrar tudo  6-Sair")
-    op = input("Escolha: ")
+    # Loop contínuo do menu principal de operações
+    while True:
+        print("\n1-Consultar  2-Vender  3-Repor estoque")
+        print("4-Estoque abaixo de 3  5-Mostrar tudo  6-Sair")
+        op = input("Escolha: ")
 
-    # Opção 6: Encerra o laço e finaliza o programa
-    if op == "6":
-        print("Programa encerrado!")
-        break
+        # Encerra o programa
+        if op == "6":
+            print("Programa encerrado!")
+            break
 
-    # Opção 4: Varre toda a matriz verificando itens com menos de 3 unidades
-    elif op == "4":
-        for i in range(4):
-            for j in range(3):
-                if estoque[i][j] < 3:
-                    print(modelos[i], tamanhos[j], estoque[i][j])
+        # Chama a função que verifica produtos com estoque crítico
+        elif op == "4":
+            verificar_estoque_baixo(estoque, modelos, tamanhos)
 
-    # Opção 5: Exibe a tabela completa com todos os modelos e tamanhos
-    elif op == "5":
-        print("       P   M   G")
-        for i in range(4):
-            print(modelos[i], estoque[i])
+        # Chama a função que exibe a tabela completa do estoque
+        elif op == "5":
+            mostrar_tudo(estoque, modelos)
 
-    # Opções 1, 2 e 3: Operações específicas de consulta, venda ou reposição
-    elif op in ["1", "2", "3"]:
-        m = int(input("Modelo (1 a 4): "))
-        t = input("Tamanho (P, M ou G): ").upper()
+        # Chama a função centralizada para consultar, vender ou repor itens
+        elif op in ["1", "2", "3"]:
+            gerenciar_operacao(estoque, modelos, tamanhos, op)
 
-        # Validação para garantir que o modelo e o tamanho existem
-        if m < 1 or m > 4 or t not in tamanhos:
-            print("Modelo ou tamanho inválido!")
-            continue
-
-        # Conversão das entradas para os índices reais da matriz (iniciados em zero)
-        i = m - 1
-        j = tamanhos.index(t)
-
-        # Opção 1: Consulta a quantidade disponível no estoque
-        if op == "1":
-            print("Quantidade disponível:", estoque[i][j])
-
-        # Opções 2 e 3: Venda ou reposição de mercadorias
+        # Tratamento para opções inválidas digitadas no menu
         else:
-            qtd = int(input("Quantidade: "))
+            print("Opção inválida!")
 
-            # Validação para impedir movimentações nulas ou negativas
-            if qtd <= 0:
-                print("A quantidade deve ser maior que zero!")
 
-            # Validação de saldo suficiente antes de concluir a venda
-            elif op == "2" and qtd > estoque[i][j]:
-                print("Estoque insuficiente!")
+# Função que varre toda a matriz e exibe os itens com menos de 3 unidades
+def verificar_estoque_baixo(estoque, modelos, tamanhos):
+    for i in range(4):
+        for j in range(3):
+            if estoque[i][j] < 3:
+                print(modelos[i], tamanhos[j], estoque[i][j])
 
-            # Realiza a baixa no estoque em caso de venda
-            elif op == "2":
-                estoque[i][j] -= qtd
-                print("Venda realizada!")
 
-            # Realiza o acréscimo no estoque em caso de reposição
-            else:
-                estoque[i][j] += qtd
-                print("Estoque atualizado!")
+# Função que imprime na tela o cabeçalho dos tamanhos e todo o estoque atual
+def mostrar_tudo(estoque, modelos):
+    print("       P   M   G")
+    for i in range(4):
+        print(modelos[i], estoque[i])
 
-    # Tratamento para qualquer opção digitada fora do menu
+
+# Função que centraliza as operações de consulta (1), venda (2) e reposição (3)
+def gerenciar_operacao(estoque, modelos, tamanhos, op):
+    m = int(input("Modelo (1 a 4): "))
+    t = input("Tamanho (P, M ou G): ").upper()
+
+    # Valida se o modelo e o tamanho informados existem
+    if m < 1 or m > 4 or t not in tamanhos:
+        print("Modelo ou tamanho inválido!")
+        return
+
+    # Converte as entradas do usuário para os índices reais da matriz (base 0)
+    i = m - 1
+    j = tamanhos.index(t)
+
+    # Opção 1: Apenas consulta a quantidade disponível
+    if op == "1":
+        print("Quantidade disponível:", estoque[i][j])
+    
+    # Opções 2 e 3: Solicita a quantidade para venda ou reposição
     else:
-        print("Opção inválida!")
+        qtd = int(input("Quantidade: "))
+
+        # Impede movimentações com valores nulos ou negativos
+        if qtd <= 0:
+            print("A quantidade deve ser maior que zero!")
+        
+        # Impede a venda caso a quantidade solicitada seja maior que o saldo
+        elif op == "2" and qtd > estoque[i][j]:
+            print("Estoque insuficiente!")
+        
+        # Efetua a baixa no estoque em caso de venda
+        elif op == "2":
+            estoque[i][j] -= qtd
+            print("Venda realizada!")
+        
+        # Efetua o acréscimo no estoque em caso de reposição
+        else:
+            estoque[i][j] += qtd
+            print("Estoque atualizado!")
+
+
+# Ponto de entrada que inicia a execução do programa pela função main()
+if __name__ == "__main__":
+    main()
