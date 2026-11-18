@@ -1,20 +1,87 @@
-Nome dos Integrantes - Luís Guilherme, Arthur Resende, Caio Almeida, João Emanuel, Pedro Henrique, Otavio, Luana Nunes e Mayckomar José.
-Materia - Fundamentos da Programação. 
+# repositorio-matrizes
+# Código da Atividade - Modelos de Camisetas
 
-Neste trabalho, nós desenvolvemos um sistema em Python com o objetivo de automatizar e controlar o estoque de uma loja de camisetas. A nossa ideia foi criar uma solução prática e funcional que gerencie 4 modelos diferentes de camisetas em três tamanhos distintos (P, M e G), garantindo o controle total das movimentações de forma organizada.
-Para estructurar nosso projeto, dividimos o código em funções bem definidas, o que facilitou bastante a manutenção e a legibilidade do sistema. Abaixo, explicamos como a nossa aplicação funciona por partes:
+# Definição das listas de referência e da matriz principal de estoque
+modelos = ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
+tamanhos = ["P", "M", "G"]
+estoque = []
 
-1. A Estrutura de Dados (estoque)
-Para guardar as informações na memória, nós utilizamos uma matriz (uma lista de listas). No nosso sistema, cada linha representa um dos 4 modelos de camisetas, e cada coluna representa um tamanho (P, M ou G). Dessa forma, conseguimos mapear o estoque exato de cada variação de produto de maneira simples e direta.
-2. O Cadastro Inicial e o Menu Principal (main)
-Quando o programa é iniciado, a nossa função main entra em ação:
-Cadastro: Nós implementamos um loop que percorre cada modelo e tamanho, exigindo que o usuário digite a quantidade inicial. Nós também colocamos uma validação com while para impedir que alguém digite números negativos.
-Menu Interativo: Em seguida, o sistema exibe um menu contendo opções de consulta, vendas, reposição, consulta de estoque baixo e exibição geral. O programa fica rodando em um loop contínuo até que nós decidamos escolher a opção de sair.
-3. Consultas e Operações (gerenciar_operacao)
-Para evitar repetição de código, nós centralizamos as operações de Consultar (1), Vender (2) e Repor estoque (3) em uma única função.
-O usuário digita o número do modelo (de 1 a 4) e a letra do tamanho (P, M ou G). Nós usamos o método .upper() para aceitar letras minúsculas sem erro e convertemos esses dados para os índices reais da matriz (já que o Python começa a contar do zero).
-Validações: Nós programamos o sistema para recusar quantidades inválidas (menores ou iguais a zero) e, no caso das vendas, garantimos que o programa impeça a saída de produtos caso o estoque seja insuficiente, exibindo uma mensagem de alerta.
-4. Relatórios e Alertas
-Nós também criamos funções específicas para a visualização rápida dos dados:
-Verificação de Estoque Baixo (verificar_estoque_baixo): Varre toda a nossa matriz procurando por itens com quantidade menor que 3, o que serve como um alerta automático para reposição.
-Mostrar Tudo (mostrar_tudo): Imprime na tela uma tabela organizada com o cabeçalho dos tamanhos e a situação atual de todos os modelos cadastrados.
+# Cadastro inicial: percorre cada modelo e tamanho para preencher a matriz
+for modelo in modelos:
+    linha = []
+    for tamanho in tamanhos:
+        qtd = int(input(f"{modelo}, tamanho {tamanho}: "))
+        # Validação para impedir que o usuário digite números negativos
+        while qtd < 0:
+            print("Quantidade inválida!")
+            qtd = int(input("Digite novamente: "))
+        linha.append(qtd)
+    estoque.append(linha)
+
+# Menu interativo principal em execução contínua
+while True:
+    print("\n1-Consultar  2-Vender  3-Repor estoque")
+    print("4-Estoque abaixo de 3  5-Mostrar tudo  6-Sair")
+    op = input("Escolha: ")
+
+    # Opção 6: Encerra o laço e finaliza o programa
+    if op == "6":
+        print("Programa encerrado!")
+        break
+
+    # Opção 4: Varre toda a matriz verificando itens com menos de 3 unidades
+    elif op == "4":
+        for i in range(4):
+            for j in range(3):
+                if estoque[i][j] < 3:
+                    print(modelos[i], tamanhos[j], estoque[i][j])
+
+    # Opção 5: Exibe a tabela completa com todos os modelos e tamanhos
+    elif op == "5":
+        print("       P   M   G")
+        for i in range(4):
+            print(modelos[i], estoque[i])
+
+    # Opções 1, 2 e 3: Operações específicas de consulta, venda ou reposição
+    elif op in ["1", "2", "3"]:
+        m = int(input("Modelo (1 a 4): "))
+        t = input("Tamanho (P, M ou G): ").upper()
+
+        # Validação para garantir que o modelo e o tamanho existem
+        if m < 1 or m > 4 or t not in tamanhos:
+            print("Modelo ou tamanho inválido!")
+            continue
+
+        # Conversão das entradas para os índices reais da matriz (iniciados em zero)
+        i = m - 1
+        j = tamanhos.index(t)
+
+        # Opção 1: Consulta a quantidade disponível no estoque
+        if op == "1":
+            print("Quantidade disponível:", estoque[i][j])
+
+        # Opções 2 e 3: Venda ou reposição de mercadorias
+        else:
+            qtd = int(input("Quantidade: "))
+
+            # Validação para impedir movimentações nulas ou negativas
+            if qtd <= 0:
+                print("A quantidade deve ser maior que zero!")
+
+            # Validação de saldo suficiente antes de concluir a venda
+            elif op == "2" and qtd > estoque[i][j]:
+                print("Estoque insuficiente!")
+
+            # Realiza a baixa no estoque em caso de venda
+            elif op == "2":
+                estoque[i][j] -= qtd
+                print("Venda realizada!")
+
+            # Realiza o acréscimo no estoque em caso de reposição
+            else:
+                estoque[i][j] += qtd
+                print("Estoque atualizado!")
+
+    # Tratamento para qualquer opção digitada fora do menu
+    else:
+        print("Opção inválida!")
