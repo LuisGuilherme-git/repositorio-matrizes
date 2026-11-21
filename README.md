@@ -7,7 +7,7 @@
 O presente projeto consiste no desenvolvimento de um sistema computacional robusto implementado em linguagem Python, concebido com a finalidade primordial de automatizar, controlar e gerenciar o fluxo de estoque de uma loja de vestuário especializada em camisetas. A motivação central por trás desta solução foi a criação de uma ferramenta prática, interativa e funcional capaz de administrar com precisão o inventário de quatro modelos distintos de camisetas, subdivididos em três tamanhos fundamentais: **Pequeno (P)**, **Médio (M)** e **Grande (G)**. Com essa arquitetura, o sistema assegura o controle rigoroso de todas as entradas e saídas de mercadorias, mantendo a integridade e a organização dos dados logísticos do estabelecimento.
 
 Este trabalho acadêmico foi desenvolvido para a disciplina de **Fundamentos da Programação**, na **Universidade Federal do Norte do Tocantins (UFNT)**. A concepção, estruturação lógica e implementação do código foram realizadas pela equipe composta pelos integrantes:
-> **Luís Guilherme, Arthur Resende, Caio Almeida, João Emanuel, Pedro Henrique, Luiz Fernando, Otávio Rodrigues, Luana Nunes e Mayckomar José**
+> **Luís Guilherme, Arthur Resende, Caio Almeida, João Emannuell, Pedro Henrique, Luiz Fernando, Otávio Rodrigues, Luana Nunes e Mayckomar José**
 
 Aplicando os conceitos fundamentais de manipulação de matrizes, estruturas de repetição, condicionais e modularização por funções.
 
