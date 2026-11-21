@@ -1,0 +1,50 @@
+#Questão 1 
+
+def calcular_total(usuario_preco,quantidade):
+  total = usuario_preco*quantidade
+  return total
+usuario_preco = float(input('Digite o preço do produto: '))
+quantidade = int(input('Digite a quantidade de produtos: '))
+total_compra = usuario_preco*quantidade
+print(f'O valor total da compra é de ${total_compra}')
+
+
+#Questão 2
+
+def calcular_media(nota_um,nota_dois):
+  media = (nota_um+nota_dois) / 2
+  return media
+
+
+def definir_situacao(media):
+  if media >= 7:
+    return 'Aprovado'
+  else:
+    return 'Reprovado'
+
+
+nota_um = float(input('Digite sua primeira nota: '))
+nota_dois = float(input('Digite sua segunda nota: '))
+
+
+media_estudante = calcular_media(nota_um,nota_dois)
+situacao = definir_situacao(media_estudante)
+
+print(f'Média {media_estudante}.')
+print(f'Situação:{situacao}')
+
+#Questão 3
+
+def calcular_total_produto(matriz, num_produto):
+    return sum(matriz[num_produto])
+
+dias = ["Seg", "Ter", "Qua", "Qui", "Sex"]
+
+vendas = [
+    [int(input(f"Prod {p+1} - {d}: ")) for d in dias]
+    for p in range(4)
+]
+
+print("\n--- Totais ---")
+for i in range(4):
+    print(f"Produto {i+1}: {calcular_total_produto(vendas, i)}")
